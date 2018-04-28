@@ -10,7 +10,7 @@ class BrainfuckCPU {
 private:
     uint32_t memsize;
     uint32_t pointer;
-    uint32_t* memory;
+    uint32_t* memory = (uint32_t*) malloc(memsize * sizeof(uint32_t));
     uint32_t codePointer;
     int8_t cycleState = -1;
     bool inaloop = false;

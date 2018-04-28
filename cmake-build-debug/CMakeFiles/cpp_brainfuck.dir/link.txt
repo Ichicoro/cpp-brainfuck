@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/cpp_brainfuck.dir/main.cpp.o CMakeFiles/cpp_brainfuck.dir/BrainfuckCPU.cpp.o  -o cpp_brainfuck 

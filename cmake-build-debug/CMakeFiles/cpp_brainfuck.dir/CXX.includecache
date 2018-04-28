@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/ichicoro/Projects/cpp-brainfuck/BrainfuckCPU.cpp
+iostream
+-
+
+/Users/ichicoro/Projects/cpp-brainfuck/main.cpp
+iostream
+-
+BrainfuckCPU.cpp
+/Users/ichicoro/Projects/cpp-brainfuck/BrainfuckCPU.cpp
+

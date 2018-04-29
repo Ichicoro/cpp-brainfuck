@@ -127,7 +127,7 @@ public:
     }
 
     void printPtrByte() {
-        std::cout << char(memory->at(pointer));
+        std::cout << char(memory->at(pointer)) << std::flush;
     }
 
 

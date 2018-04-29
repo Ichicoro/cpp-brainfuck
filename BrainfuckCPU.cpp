@@ -4,46 +4,39 @@
 
 //#include "BrainfuckCPU.h"
 #include <iostream>
+#include <vector>
 
 class BrainfuckCPU {
 
 private:
-    uint32_t memsize;
     uint32_t pointer;
-    uint32_t* memory = (uint32_t*) malloc(memsize * sizeof(uint32_t));
-    uint32_t codePointer;
+    std::vector<uint32_t> *memory;
+    uint32_t codePointer{};
     int8_t cycleState = -1;
     bool inaloop = false;
     int8_t state = 0; // 0 = idle, -1 = left, +1 = right
     uint8_t openBrackets = 0;
-    char *srcCode;
+    std::string srcCode;
 
     void executeCommand(char cmd) {
         switch (cmd) {
-            case '>': pointer++; break;
-            case '<': pointer--; break;
+            case '>': incPointer(); break;
+            case '<': decPointer(); break;
             case '+': incByte(); break;
             case '-': decByte(); break;
             case '.': printPtrByte(); break;
             case ',': break;
-            case '[': if (memory[pointer] == 0) state = +1; break;
-            case ']': if (memory[pointer] != 0) state = -1; break;
+            case '[': if (memory->at(pointer) == 0) state = +1; break;
+            case ']': if (memory->at(pointer) != 0) state = -1; break;
         }
     }
 
 public:
     BrainfuckCPU() {
-        setMemsize(10000);
-        memory = new uint32_t[memsize];
-    }
-
-    BrainfuckCPU(uint32_t memory_size) {
-        setMemsize(memory_size);
-    }
-
-    uint8_t setMemsize(uint32_t memory_size) {
-        memsize = memory_size;
-        return 0;
+        codePointer = 0;
+        pointer = 0;
+        memory = new std::vector<uint32_t>(1);
+        std::cout << memory->at(0) << std::endl;
     }
 
     void setPointer(uint32_t ptr) {
@@ -51,30 +44,45 @@ public:
     }
 
     uint32_t getCell() {
-        return memory[pointer];
+        return memory->at(pointer);
     }
 
-    void load(char code[]) {
+    void load(std::string code) {
         srcCode = code;
     }
 
     void incByte() {
-        memory[pointer]++;
+        memory->at(pointer) += 1;
     }
 
     void decByte() {
-        memory[pointer]--;
+        memory->at(pointer) -= 1;
     }
 
-    void runCode(char code[]) {
+    void incPointer() {
+        pointer++;
+        if (pointer == memory->size()) {
+            memory->emplace_back(0);
+        }
+    }
+
+    void decPointer() {
+        if (pointer == 0) {
+            pointer = static_cast<uint32_t>(memory->size() - 1);
+        } else {
+            pointer--;
+        }
+    }
+
+    void runCode(std::string code) {
         uint i = 0;
-        while (i < strlen(code)) {
+        while (i < code.length()) {
             switch (state) {
                 case 0:
-                    executeCommand(code[i]);
+                    executeCommand(code.at(i));
                     break;
                 case -1:
-                    switch (code[i]) {
+                    switch (code.at(i)) {
                         case ']':
                             openBrackets++;
                             break;
@@ -87,7 +95,7 @@ public:
                     }
                     break;
                 case +1:
-                    switch (code[i]) {
+                    switch (code.at(i)) {
                         case '[':
                             openBrackets++;
                             break;
@@ -119,11 +127,11 @@ public:
     }
 
     void printPtrByte() {
-        std::cout << getCell();
+        std::cout << char(memory->at(pointer));
     }
 
 
-    uint32_t* machineState() {
+    std::vector<uint32_t> * machineState() {
         return memory;
     }
 

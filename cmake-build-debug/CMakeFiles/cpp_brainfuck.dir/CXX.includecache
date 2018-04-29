@@ -9,6 +9,8 @@
 /Users/ichicoro/Projects/cpp-brainfuck/BrainfuckCPU.cpp
 iostream
 -
+vector
+-
 
 /Users/ichicoro/Projects/cpp-brainfuck/main.cpp
 iostream
